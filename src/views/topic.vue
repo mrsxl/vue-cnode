@@ -10,23 +10,22 @@
 		<div class="markdown-body topic-content" v-html="topic.content"></div>
 		<div class="back" @click="back"><i class="iconfont icon-back"></i></div>
 		<div class="reply"><i class="iconfont icon-news"></i>{{topic.reply_count}}</div>
-		<to-top :show="showBacktoTop" @click.native="backtoTop"></to-top>
+		<top :show="showBacktoTop" @click.native="backtoTop" />
 	</div>
 </template>
 
 <script>
 	import { getClientHeight, formateTime } from '../utils'
 	import { XHeader }from 'vux'
-	import ToTop from '../components/backtoTop.vue'
+	import Top from '../components/backtoTop.vue'
 
 	export default {
 		components: {
 			XHeader,
-			ToTop
+			Top
 		},
 		mounted () {
 			this.getTopic();
-			this.scroll();
 			window.addEventListener('scroll', this.scroll);
 		},
 		data () {

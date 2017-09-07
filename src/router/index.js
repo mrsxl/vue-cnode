@@ -4,11 +4,11 @@
 
 const routes = [{
 	path: '/',
-	component: resolve => require(['../pages/index.vue'], resolve)
+	component: resolve => require(['../views/index.vue'], resolve)
 }, {
 	path: '/topic/:topicId',
 	name: 'topic',
-	component: resolve => require(['../pages/topic.vue'], resolve)
+	component: resolve => require(['../views/topic.vue'], resolve)
 }, ];
 
 export default routes;

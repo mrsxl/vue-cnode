@@ -18,15 +18,15 @@
         <side-bar></side-bar>
       </popup>
     </div>
-    <to-top :show="showBacktoTop" @click.native="backtoTop"></to-top>
+    <top :show="showBacktoTop" @click.native="backtoTop" />
 	</div>
 </template>
 
 <script>	
 	import { TransferDom, XHeader, Popup, Scroller } from 'vux'
-	import SideBar from '../components/SideBar.vue'
-	import Posts from '../components/Posts.vue'
-	import ToTop from '../components/backtoTop.vue'; 
+	import SideBar from '../components/sideBar.vue'
+	import Posts from '../components/posts.vue'
+	import Top from '../components/backtoTop.vue'; 
 
 	export default {
 		directives: {
@@ -38,7 +38,7 @@
 			Scroller,
 			SideBar,
 			Posts,
-			ToTop
+			Top
 		},
 		mounted() {
 			this.getList();
