@@ -9,7 +9,9 @@
 		</header>
 		<div class="markdown-body topic-content" v-html="topic.content"></div>
 		<div class="back" @click="back"><i class="iconfont icon-back"></i></div>
-		<div class="reply"><i class="iconfont icon-news"></i>{{topic.reply_count}}</div>
+		<router-link :to="{name: 'comment', params: {topicId: $route.params.topicId}}" class="reply">
+			<i class="iconfont icon-news"></i>{{topic.reply_count}}
+		</router-link>
 		<top :show="showBacktoTop" @click.native="backtoTop" />
 	</div>
 </template>

@@ -26,7 +26,7 @@
 	import { TransferDom, XHeader, Popup, Scroller } from 'vux'
 	import SideBar from '../components/sideBar.vue'
 	import Posts from '../components/posts.vue'
-	import Top from '../components/backtoTop.vue'; 
+	import Top from '../components/backtoTop.vue'
 
 	export default {
 		directives: {
@@ -90,7 +90,6 @@
 	    margin-bottom: 5px; 
 	    padding: 10px 15px;
 	    background: #fff;
-
 	  }
 	}
 </style>

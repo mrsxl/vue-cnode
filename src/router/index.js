@@ -9,6 +9,10 @@ const routes = [{
 	path: '/topic/:topicId',
 	name: 'topic',
 	component: resolve => require(['../views/topic.vue'], resolve)
+}, {
+	path: '/comment/:topicId',
+	name: 'comment',
+	component: resolve => require(['../views/comments.vue'], resolve)
 }, ];
 
 export default routes;
