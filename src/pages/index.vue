@@ -1,18 +1,16 @@
 <template>
 	<div>
-		<x-header :right-options="{showMore: true}" @on-click-more="showTab = true">
+		<x-header :right-options="{showMore: true}">
 			 	<span>{{topic}}</span>
 	      <div  @click="showSideBar = true" slot="overwrite-left">
 	      	<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
 	      </div>
 		</x-header>
-		<scroller height="-46" lock-x ref="scroller">
+		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">
       <ul class="posts-list" >
         <li v-for="item in posts">
         	<Posts :posts="item"/>             
         </li>
-        <!-- new -->
-        <!-- new -->
       </ul>
     </scroller>
 		<div v-transfer-dom>
@@ -20,6 +18,7 @@
         <side-bar></side-bar>
       </popup>
     </div>
+    <to-top :show="showBacktoTop" @click.native="backtoTop"></to-top>
 	</div>
 </template>
 
@@ -27,6 +26,7 @@
 	import { TransferDom, XHeader, Popup, Scroller } from 'vux'
 	import SideBar from '../components/SideBar.vue'
 	import Posts from '../components/Posts.vue'
+	import ToTop from '../components/backtoTop.vue'; 
 
 	export default {
 		directives: {
@@ -37,7 +37,8 @@
 			Popup,
 			Scroller,
 			SideBar,
-			Posts
+			Posts,
+			ToTop
 		},
 		mounted() {
 			this.getList();
@@ -45,25 +46,9 @@
 		data () {
 			return {
 				showSideBar: false,
-				showTab: false,
+				showBacktoTop: false,
 				topic: '主页',
 				posts: [],
-				menus: [{
-					label: '主页',
-					value: 'topics'
-				},{
-					label: '问答',
-					value: 'ask'
-				},{
-					label: '分享',
-					value: 'share'
-				},{
-					label: '招聘',
-					value: 'job'
-				},{
-					label: '精华',
-					value: 'good'
-				}]
 			}
 		},
 		methods: {
@@ -85,6 +70,15 @@
 					  this.$refs.scroller.reset()
 					})
 				})
+			},
+			//列表滚动
+			scroll (pos) {
+				this.showBacktoTop = pos.top > 200;
+			},
+			//返回顶部
+			backtoTop () {
+				this.$refs.scroller.reset({top: 0});
+				this.showBacktoTop = false;
 			}
 		}
 	}

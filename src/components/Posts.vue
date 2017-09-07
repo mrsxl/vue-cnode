@@ -1,23 +1,27 @@
 <template>
-	<a class="posts">
-		<h3 class="title" title="置顶">{{posts.title}}</h3>
+	<router-link :to="{name: 'topic', params: {topicId: posts.id}}" class="posts">
+		<h3 class="title" 
+        :title="getTabInfo(posts.tab, posts.good, posts.top, false)"
+        :class="getTabInfo(posts.tab, posts.good, posts.top, true)">{{posts.title}}</h3>
     <div class="content">
-      <img :src="posts.author.avatar_url" @click="lg">
+      <img :src="posts.author.avatar_url">
       <div class="info">
         <div>
           <span class="name">{{posts.author.loginname}}</span>
           <span class=""><i style="color:#80bd01;">{{posts.reply_count}}</i>/{{posts.visit_count}}</span>
         </div>
         <div>
-          <time>6个月前</time>
-          <time>4周前</time>
+          <time>发布于{{formateTime(posts.create_at)}}</time>
+          <time>最近更新{{formateTime(posts.last_reply_at)}}</time>
         </div>
       </div>
     </div>
-	</a>
+	</router-link>
 </template>
 
 <script>
+  import { getTabInfo, formateTime } from '../utils'
+
 	export default {
     props: {
       posts: {
@@ -25,8 +29,13 @@
       }
     },
     methods: {
-      lg() {
-        console.log(this.posts)
+      //获取不同tab的标题和样式类名
+      getTabInfo (tab, good, top, isClass) {
+        return getTabInfo(tab, good, top, isClass);
+      },
+      //格式化时间
+      formateTime (time) {
+        return formateTime(time);
       }
     }
   }
@@ -50,8 +59,26 @@
     padding: 3px 6px;
     border-radius: 3px;
     font-size: 10px;
-    background: #80bd01;
+    
     color: #fff;    
+  }
+  .top:before {
+    background: #80bd01;
+  }
+  .good:before {
+    background: #4dc2c4;
+  }
+  .share:before {
+    background: #42b983;
+  }
+  .job:before {
+    background: #80bd55;
+  }
+  .ask:before {
+    background: #80bd88;
+  }
+  .none:before {
+    background: #ccc;
   }
   .content {
     display: flex;
@@ -61,6 +88,7 @@
       margin-right: 10px;
       width: 40px;
       height: 40px;
+      border: 1px solid #ccc;
       border-radius: 50%;
     }
     .info {

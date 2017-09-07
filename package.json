@@ -5,7 +5,7 @@
   "author": "mrsxl",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "node build/dev-server.js --hot --inline --progress --colors",
     "build": "node build/build.js"
   },
   "dependencies": {
