@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<x-header>
-			 	<span>{{topic}}</span>
+			 	<span>{{activeTab.label}}</span>
 	      <div  @click="showSideBar = true" slot="overwrite-left">
 	      	<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
 	      </div>
@@ -15,7 +15,7 @@
     </scroller>
 		<div v-transfer-dom>
       <popup v-model="showSideBar" position="left" width="60%">
-        <side-bar v-on:hide="showSideBar = false"></side-bar>
+        <side-bar v-on:hide="hide"></side-bar>
       </popup>
     </div>
     <top :show="showBacktoTop" @click.native="backtoTop" />
@@ -43,53 +43,70 @@
 		},
 		mounted() {
 			this.getList();
-			this.$store.dispatch('fetchTopicList');
+			if(this.topicList.all.data.length === 0) {
+				this.$store.dispatch('fetchTopicList');	
+			}			
 		},
 		data () {
 			return {
 				showSideBar: false,
-				showBacktoTop: false,
-				posts: [],
+				showBacktoTop: false, //是否显示顶部组件
+				currentScrollTop: 0
 			}
 		},
 		computed: {
 			...mapGetters([
-				'tabs'
+				'tabs',
+				'topicList'
 			]),
-			topic () {
-				let tab = this.tabs.find(item => item.isActive);
-				return tab.label;
+			//当前显示的tab 
+			activeTab () {
+				return this.tabs.find(item => item.isActive);
+			},
+			//帖子列表
+			posts () {
+				return this.topicList[this.activeTab.tab].data;
 			}
 		},
 		methods: {
 			//获取主题列表
 			getList () {
-				this.$http.get('/topics', {
-					params:{
-						page: 1,
-						tab: 'all',
-						limit: 10,
-						mdrender: true,
-					}
-				}).then(res => {
-					if (res.data.success) {
-						this.posts = res.data.data
-					}
 
-					this.$nextTick(() => {
-					  this.$refs.scroller.reset()
-					})
-				})
 			},
 			//列表滚动
 			scroll (pos) {
+				this.currentScrollTop = pos.top;
 				this.showBacktoTop = pos.top > 200;
+			},
+			//隐藏侧边菜单
+			hide () {				
+				this.updateScrollTop();
+				this.showSideBar = false;
+			},
+			//记录滚动位置
+			updateScrollTop () {
+				this.$store.dispatch('updateScrollTop', {
+					tab: this.tabs.find(item => item.isActive).tab,
+					scrollTop: this.currentScrollTop < 0 ? 0 : this.currentScrollTop
+				});
 			},
 			//返回顶部
 			backtoTop () {
 				this.$refs.scroller.reset({top: 0});
 				this.showBacktoTop = false;
 			}
+		},
+		watch: {
+			posts (val) {
+				let scrollTop = this.topicList[this.activeTab.tab].scrollTop;
+
+				this.$nextTick(() => {
+				  this.$refs.scroller.reset({top: scrollTop})
+				})
+			}
+		},
+		beforeDestroy () {
+			this.updateScrollTop();
 		}
 	}
 </script>

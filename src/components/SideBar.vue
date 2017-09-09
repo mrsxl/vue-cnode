@@ -3,13 +3,13 @@
     <header class="head"></header>
     <div class="topics">
       <ul>
-        <li v-for="(item,index) in tabs" :class="[item.isActive ? 'active' : '']" @click="toogleTab(item, index)"><i class="iconfont icon-yiwen"></i>{{item.label}}</li>
+        <li v-for="(item,index) in tabs" :class="[item.isActive ? 'active' : '']" @click="toogleTab(item, index)"><i :class="['iconfont', item.icon]"></i>{{item.label}}</li>
       </ul>
     </div>
     <footer>
       <ul>
-        <li><i class="iconfont icon-yiwen"></i>消息</li>
-        <li><i class="iconfont icon-yiwen"></i>关于</li>
+        <li><i class="iconfont icon-messsage"></i>消息</li>
+        <li><i class="iconfont icon-about"></i>关于</li>
       </ul>
     </footer>
   </div>
@@ -34,12 +34,12 @@
 				if (this.activeTabIndex === index) {
 					return
 				} else {
+					this.$emit('hide');
 					this.$store.dispatch('toogleTab', {
-						name: item.tab,
+						tab: item.tab,
 						current: this.activeTabIndex, 
 						new: index
-					});
-					this.$emit('hide');
+					});					
 				}
 			}
 		}
@@ -66,7 +66,7 @@
 	    color: #333;
 
 	    i {
-	      margin: 0 10px;
+	      margin: 0 15px;
 	    }
 	  }
 	  .active {
