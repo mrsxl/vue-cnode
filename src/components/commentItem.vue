@@ -1,24 +1,13 @@
 <template>
 	<a class="comment-item">
 		<div class="comment">
-			<!-- <img :src="comment.author.avatar_url"> 		
-			<div class="content">
-				<div class="commentItem-header">
-					<h4>{{comment.author.loginname}}</h4>
-					<div>#1</div>
-				</div>
-				<div class="commentItem-content markdown-body" v-html="comment.content"></div>
-				<div class="commentItem-footer">
-					<span><i class="iconfont icon-zan"></i>{{comment.ups.length === 0 ? '' : comment.ups.length}}</span><span>回复</span> <span>{{formateTime(comment.create_at)}}</span>
-				</div>
-			</div> -->
 			<div class="commentItem-header">
 				<img :src="comment.author.avatar_url">
 				<div class="author-info">
 					<h4>{{comment.author.loginname}}</h4>
 					<time>{{formateTime(comment.create_at)}}</time>
 				</div>
-				<div class="floor">#1</div>
+				<div class="floor">#{{floor}}</div>
 			</div>
 			<div class="commentItem-content markdown-body" v-html="comment.content"></div>
 			<div class="commentItem-footer">
@@ -35,6 +24,9 @@
 		props: {
       comment: {
         type: Object
+      },
+      floor: {
+      	type: Number
       }
     },
     methods: {

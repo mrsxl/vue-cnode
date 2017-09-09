@@ -5,8 +5,8 @@
 		</x-header>
 		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">
       <ul class="comments-list" >
-        <li v-for="item in topic.replies">
-        	<comment-item :comment="item"></comment-item>      
+        <li v-for="(item, index) in topic.replies">
+        	<comment-item :comment="item" :floor="index+1"></comment-item>      
         </li>
       </ul>
     </scroller>

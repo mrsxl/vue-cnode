@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<x-header :right-options="{showMore: true}">
+		<x-header>
 			 	<span>{{topic}}</span>
 	      <div  @click="showSideBar = true" slot="overwrite-left">
 	      	<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
@@ -15,14 +15,15 @@
     </scroller>
 		<div v-transfer-dom>
       <popup v-model="showSideBar" position="left" width="60%">
-        <side-bar></side-bar>
+        <side-bar v-on:hide="showSideBar = false"></side-bar>
       </popup>
     </div>
     <top :show="showBacktoTop" @click.native="backtoTop" />
 	</div>
 </template>
 
-<script>	
+<script>
+	import { mapGetters } from 'vuex'	
 	import { TransferDom, XHeader, Popup, Scroller } from 'vux'
 	import SideBar from '../components/sideBar.vue'
 	import Posts from '../components/posts.vue'
@@ -42,13 +43,22 @@
 		},
 		mounted() {
 			this.getList();
+			this.$store.dispatch('fetchTopicList');
 		},
 		data () {
 			return {
 				showSideBar: false,
 				showBacktoTop: false,
-				topic: '主页',
 				posts: [],
+			}
+		},
+		computed: {
+			...mapGetters([
+				'tabs'
+			]),
+			topic () {
+				let tab = this.tabs.find(item => item.isActive);
+				return tab.label;
 			}
 		},
 		methods: {

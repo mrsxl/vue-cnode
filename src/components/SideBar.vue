@@ -3,11 +3,7 @@
     <header class="head"></header>
     <div class="topics">
       <ul>
-        <li class="active"><i class="iconfont icon-yiwen"></i>全部</li>
-        <li><i class="iconfont icon-yiwen"></i>精华</li>
-        <li><i class="iconfont icon-yiwen"></i>分享</li>
-        <li><i class="iconfont icon-yiwen"></i>招聘</li>
-        <li><i class="iconfont icon-yiwen"></i>问答</li>
+        <li v-for="(item,index) in tabs" :class="[item.isActive ? 'active' : '']" @click="toogleTab(item, index)"><i class="iconfont icon-yiwen"></i>{{item.label}}</li>
       </ul>
     </div>
     <footer>
@@ -18,6 +14,37 @@
     </footer>
   </div>
 </template>
+
+<script>
+	import { mapGetters } from 'vuex'
+
+	export default {
+		computed: {
+			...mapGetters([
+				'tabs'
+			]),
+			//当前显示的tab索引
+			activeTabIndex () {
+				return this.tabs.findIndex(item => item.isActive);
+			}
+		},
+		methods: {
+			//切换tab
+			toogleTab (item, index) {
+				if (this.activeTabIndex === index) {
+					return
+				} else {
+					this.$store.dispatch('toogleTab', {
+						name: item.tab,
+						current: this.activeTabIndex, 
+						new: index
+					});
+					this.$emit('hide');
+				}
+			}
+		}
+	}
+</script>
 
 <style lang="less" scoped>
 	.side {
@@ -30,7 +57,7 @@
 	    background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);
 	  }
 	  .topics {
-	    margin-top: 5px;
+	    margin: 5px 0;
 	  }
 	  li {
 	    height: 40px;
