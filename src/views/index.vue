@@ -1,17 +1,21 @@
 <template>
 	<div>
-		<x-header>
+		<x-header style="background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);">
 			 	<span>{{activeTab.label}}</span>
 	      <div  @click="showSideBar = true" slot="overwrite-left">
 	      	<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
 	      </div>
 		</x-header>
-		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">
+		<scroller height="-46" lock-x ref="scroller" :use-pullup="true"  v-model="scrollerStatus" @on-scroll="scroll" @on-pullup-loading="pullUp">
       <ul class="posts-list" >
         <li v-for="item in posts">
         	<Posts :posts="item"/>             
         </li>
       </ul>
+      <div slot="pullup" :class="[showLoading ? 'loading' : 'load']">
+        <load-more :tip="loadingText" background-color="transparent" v-if="showLoading"></load-more>
+        <load-more :show-loading="false" background-color="transparent" :tip="loadingText" v-else></load-more>
+      </div>
     </scroller>
 		<div v-transfer-dom>
       <popup v-model="showSideBar" position="left" width="60%">
@@ -24,7 +28,7 @@
 
 <script>
 	import { mapGetters } from 'vuex'	
-	import { TransferDom, XHeader, Popup, Scroller } from 'vux'
+	import { TransferDom, XHeader, Popup, Scroller, LoadMore } from 'vux'
 	import SideBar from '../components/sideBar.vue'
 	import Posts from '../components/posts.vue'
 	import Top from '../components/backtoTop.vue'
@@ -37,6 +41,7 @@
 			XHeader,
 			Popup,
 			Scroller,
+			LoadMore,
 			SideBar,
 			Posts,
 			Top
@@ -51,13 +56,19 @@
 			return {
 				showSideBar: false,
 				showBacktoTop: false, //是否显示顶部组件
-				currentScrollTop: 0
+				currentScrollTop: 0,
+				showLoading: false,
+				loadingText: '上拉加载',
+        // scrollerStatus: {
+        //   pullupStatus: 'default'
+        // }
 			}
 		},
 		computed: {
 			...mapGetters([
 				'tabs',
-				'topicList'
+				'topicList',
+				'scrollerStatus'
 			]),
 			//当前显示的tab 
 			activeTab () {
@@ -94,6 +105,14 @@
 			backtoTop () {
 				this.$refs.scroller.reset({top: 0});
 				this.showBacktoTop = false;
+			},
+			//上拉加载
+			pullUp () {
+				this.showLoading = true;
+				console.log(789);
+				setTimeout(() => {
+					this.showLoading = false;
+				}, 2000)
 			}
 		},
 		watch: {
@@ -118,5 +137,11 @@
 	    padding: 10px 15px;
 	    background: #fff;
 	  }
+	}
+	.weui-loadmore_line {
+     margin-top: 1.5em; 
+	}
+	.loading div {
+		margin-top: .5em;
 	}
 </style>

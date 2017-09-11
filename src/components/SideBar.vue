@@ -53,7 +53,7 @@
 	  background: #fff;
 
 	  header {
-	    height: 20%;
+	    height: 30%;
 	    background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);
 	  }
 	  .topics {

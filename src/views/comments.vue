@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<x-header :left-options="{backText: ''}">
+		<x-header :left-options="{backText: ''}" style="background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);">
 			<span>评论 {{topic.reply_count}}</span>
 		</x-header>
 		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">

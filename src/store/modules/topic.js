@@ -34,12 +34,16 @@ const state = {
 			page: 1,
 			scrollTop: 0
 		},
-	}
+	},
+	scrollerStatus: {
+    pullupStatus: 'default'
+  }
 };
 
 const getters = {
 	tabs: state => state.tabs,
 	topicList: state => state.topicLists,
+	scrollerStatus: state => state.scrollerStatus
 };
 
 const mutations = {
