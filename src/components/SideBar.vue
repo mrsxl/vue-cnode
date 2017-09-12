@@ -1,6 +1,8 @@
 <template>
 	<div class="side">
-    <header class="head"></header>
+    <header>
+    	<user-info></user-info>
+    </header>
     <div class="topics">
       <ul>
         <li v-for="(item,index) in tabs" :class="[item.isActive ? 'active' : '']" @click="toogleTab(item, index)"><i :class="['iconfont', item.icon]"></i>{{item.label}}</li>
@@ -16,9 +18,13 @@
 </template>
 
 <script>
+	import userInfo from './userInfo.vue'
 	import { mapGetters } from 'vuex'
 
 	export default {
+		components: {
+			userInfo
+		},
 		computed: {
 			...mapGetters([
 				'tabs'

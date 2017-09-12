@@ -35,15 +35,13 @@ const state = {
 			scrollTop: 0
 		},
 	},
-	scrollerStatus: {
-    pullupStatus: 'default'
-  }
+	isLoading: false,
 };
 
 const getters = {
 	tabs: state => state.tabs,
 	topicList: state => state.topicLists,
-	scrollerStatus: state => state.scrollerStatus
+	isLoading: state => state.isLoading
 };
 
 const mutations = {
@@ -57,6 +55,9 @@ const mutations = {
 	},
 	[types.UPDATE_SCROLL_TOP] (state, data) {
 		state.topicLists[data.tab].scrollTop = data.scrollTop;
+	},
+	[types.SET_IS_LOADING] (state) {
+		state.isLoading = !state.isLoading;
 	}
 };
 

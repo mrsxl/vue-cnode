@@ -47,9 +47,8 @@
 			Top
 		},
 		mounted() {
-			this.getList();
 			if(this.topicList.all.data.length === 0) {
-				this.$store.dispatch('fetchTopicList');	
+				this.getList();	
 			}			
 		},
 		data () {
@@ -59,16 +58,16 @@
 				currentScrollTop: 0,
 				showLoading: false,
 				loadingText: '上拉加载',
-        // scrollerStatus: {
-        //   pullupStatus: 'default'
-        // }
+        scrollerStatus: {
+          pullupStatus: 'default'
+        }
 			}
 		},
 		computed: {
 			...mapGetters([
 				'tabs',
 				'topicList',
-				'scrollerStatus'
+				'isLoading'
 			]),
 			//当前显示的tab 
 			activeTab () {
@@ -82,7 +81,7 @@
 		methods: {
 			//获取主题列表
 			getList () {
-
+				this.$store.dispatch('fetchTopicList');
 			},
 			//列表滚动
 			scroll (pos) {
@@ -110,18 +109,25 @@
 			pullUp () {
 				this.showLoading = true;
 				console.log(789);
-				setTimeout(() => {
-					this.showLoading = false;
-				}, 2000)
+				this.updateScrollTop();
+				this.getList();
+				// setTimeout(() => {
+				// 	this.showLoading = false;
+				// }, 2000)
 			}
 		},
 		watch: {
 			posts (val) {
 				let scrollTop = this.topicList[this.activeTab.tab].scrollTop;
-
+				//重置滚动位置
 				this.$nextTick(() => {
 				  this.$refs.scroller.reset({top: scrollTop})
 				})
+			},
+			isLoading (val) {
+				if(!val) {
+					this.scrollerStatus.pullupStatus = 'default';
+				}
 			}
 		},
 		beforeDestroy () {

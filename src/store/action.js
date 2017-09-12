@@ -14,7 +14,8 @@ export const toogleTab = ({ dispatch, commit, state }, data) => {
 }
 
 //请求主题列表
-export const fetchTopicList = ({ commit, state }) => {
+export const fetchTopicList = ({ dispatch, commit, state }) => {
+	dispatch('setIsLoading');
 	let activeTab = state.topic.tabs.filter(({isActive}) => isActive)[0];
 
 	axios.get('/topics', {
@@ -30,7 +31,9 @@ export const fetchTopicList = ({ commit, state }) => {
 		} else {
 			//错误处理
 		}
+		dispatch('setIsLoading');
 	}).catch( err => {
+		dispatch('setIsLoading');
 	  console.log(err);
 	});
 }
@@ -38,6 +41,11 @@ export const fetchTopicList = ({ commit, state }) => {
 //记录当前活动列表的滚动位置
 export const updateScrollTop = ({ commit }, data) => {
 	commit(types.UPDATE_SCROLL_TOP, data)
+}
+
+//设置列表加载状态
+export const setIsLoading = ({ commit }) => {
+	commit(types.SET_IS_LOADING)
 }
 
 

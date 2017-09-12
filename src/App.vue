@@ -12,7 +12,7 @@ export default {
 
 <style lang="less">
 @import '~vux/src/styles/reset.less';
-@import './assets/github.markdown.css';
+@import './assets/css/github.markdown.css';
 
 body {
   background-color: #fbf9fe;
