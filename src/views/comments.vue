@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<x-header :left-options="{backText: ''}" style="background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);">
+		<x-header :left-options="{backText: ''}" style="background:linear-gradient(143deg,#4dc2c4,#69ddd3,#88e9d8,#69e1d4);" class="header">
+			<div slot="overwrite-left" class="back" @click="back"></div>
 			<span>评论 {{topic.reply_count}}</span>
 		</x-header>
 		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">
@@ -57,12 +58,25 @@
 			backtoTop () {
 				this.$refs.scroller.reset({top: 0});
 				this.showBacktoTop = false;
+			},
+			back () {
+				this.$router.go(-1);
 			}
 		}
 	}
 </script>
 
 <style lang="less" scoped>
+	.header {
+		.back {
+			height: 15px;
+	    width: 15px;
+	    border: 1px solid #fff;
+	    border-right: none;
+	    border-bottom: none;
+	    transform: rotate(-45deg);
+		}
+	}
 	.comments-list {
 		li {
 	    padding: 10px 15px;

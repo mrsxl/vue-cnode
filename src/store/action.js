@@ -48,4 +48,12 @@ export const setIsLoading = ({ commit }) => {
 	commit(types.SET_IS_LOADING)
 }
 
+//登录
+export const login = ({ commit },token) => {
+	console.log(token);
+	return axios.post('/accesstoken', {
+		accesstoken: token
+	})
+}
+
 

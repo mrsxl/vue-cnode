@@ -1,14 +1,20 @@
 <template>
 	<div class="user-info">
 		<div class="no-login">
-			<img src="../assets/img/head.png">
+			<img src="../assets/img/head.png" @click="toLogin">
 			<span>点击头像登录</span>
 		</div>
 	</div>
 </template>
 
 <script>
-	
+	export default {
+		methods: {
+			toLogin () {
+				this.$router.push({name: 'login'});
+			}
+		}
+	}
 </script>
 
 <style lang="less" scoped>

@@ -6,6 +6,10 @@ const routes = [{
 	path: '/',
 	component: resolve => require(['../views/index.vue'], resolve)
 }, {
+	path: '/login',
+	name: 'login',
+	component: resolve => require(['../views/login.vue'], resolve)
+},{
 	path: '/topic/:topicId',
 	name: 'topic',
 	component: resolve => require(['../views/topic.vue'], resolve)
