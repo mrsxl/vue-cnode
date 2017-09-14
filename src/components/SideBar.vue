@@ -10,6 +10,7 @@
     </div>
     <footer>
       <ul>
+      	<li><i class="iconfont icon-fabu"></i>发布</li>
         <li><i class="iconfont icon-messsage"></i>消息</li>
         <li><i class="iconfont icon-about"></i>关于</li>
       </ul>

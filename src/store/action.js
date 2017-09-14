@@ -6,7 +6,9 @@ axios.defaults.baseURL = "https://cnodejs.org/api/v1";
 //更换当前活动的tab
 export const toogleTab = ({ dispatch, commit, state }, data) => {
 	commit(types.SET_ACTIVE_TAB, data);
-
+	
+	console.log('要显示的tab:'+data.tab);
+	console.log('要显示tab的数组长度:'+state.topic.topicLists[data.tab].data.length);
 	if (state.topic.topicLists[data.tab].data.length === 0) {
 		dispatch('fetchTopicList');
 	}
@@ -18,24 +20,25 @@ export const fetchTopicList = ({ dispatch, commit, state }) => {
 	dispatch('setIsLoading');
 	let activeTab = state.topic.tabs.filter(({isActive}) => isActive)[0];
 
-	axios.get('/topics', {
-		params: {
-			page: state.topic.topicLists[activeTab.tab].page,
-			tab: activeTab.tab,
-			limit: 15,
-			mdrender: true,
-		}
-	}).then( res => {
-		if (res.data.success) {
-			commit(types.UPDATE_LIST, {tab: activeTab.tab, list: res.data.data});
-		} else {
-			//错误处理
-		}
-		dispatch('setIsLoading');
-	}).catch( err => {
-		dispatch('setIsLoading');
-	  console.log(err);
-	});
+	return new Promise((resolve, reject) => {
+		axios.get('/topics', {
+			params: {
+				page: state.topic.topicLists[activeTab.tab].page,
+				tab: activeTab.tab,
+				limit: 15,
+				mdrender: true,
+			}
+		}).then( res => {
+			if (res.data.success) {
+				commit(types.UPDATE_LIST, {tab: activeTab.tab, list: res.data.data});
+				resolve(res);
+			} 
+			dispatch('setIsLoading');
+		}).catch( err => {
+			dispatch('setIsLoading');
+		  reject(err);
+		});
+	})
 }
 
 //记录当前活动列表的滚动位置

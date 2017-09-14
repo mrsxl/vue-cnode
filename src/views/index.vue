@@ -2,7 +2,7 @@
 	<div>
 		<x-header style="background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);">
 			 	<span>{{activeTab.label}}</span>
-	      <div  @click="showSideBar = true" slot="overwrite-left">
+	      <div  @click="showSide" slot="overwrite-left">
 	      	<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
 	      </div>
 		</x-header>
@@ -47,6 +47,7 @@
 			Top
 		},
 		mounted() {
+			this.reset();
 			if(this.topicList.all.data.length === 0) {
 				this.getList();	
 			}			
@@ -80,8 +81,11 @@
 		},
 		methods: {
 			//获取主题列表
-			getList () {
-				this.$store.dispatch('fetchTopicList');
+			getList (callback = null) {
+				this.$store.dispatch('fetchTopicList').then(res => {
+					this.reset();
+					callback;
+				});
 			},
 			//列表滚动
 			scroll (pos) {
@@ -93,12 +97,16 @@
 				let scrollTop = this.topicList[this.activeTab.tab].scrollTop;
 				//重置滚动位置
 				this.$nextTick(() => {
-				  this.$refs.scroller.reset({top: scrollTop}, 1, 'ease')
+				  this.$refs.scroller.reset({top: scrollTop})
 				})
 			},
-			//隐藏侧边菜单
-			hide () {				
+			//显示侧边菜单
+			showSide () {
 				this.updateScrollTop();
+				this.showSideBar = true;
+			},
+			//隐藏侧边菜单
+			hide () {					
 				this.showSideBar = false;
 			},
 			//记录滚动位置
@@ -110,29 +118,31 @@
 			},
 			//返回顶部
 			backtoTop () {
-				this.$refs.scroller.reset({top: 0});
+				this.$refs.scroller.reset({top: 0}, 1, 'ease');
 				this.showBacktoTop = false;
 			},
 			//上拉加载
 			pullUp () {
+				console.log(233);
 				this.showLoading = true;
 				this.updateScrollTop();
-				this.getList();
+				
+				setTimeout(() => {
+					this.getList((() => {
+						setTimeout(() => {
+							this.scrollerStatus.pullupStatus = 'default';
+						}, 1000)
+					})());
+				}, 1500)
+				
 			}
 		},
 		watch: {
 			posts (val) {
-				let scrollTop = this.topicList[this.activeTab.tab].scrollTop;
-				//重置滚动位置
-				this.$nextTick(() => {
-				  this.$refs.scroller.reset({top: scrollTop})
-				})
-			},
-			isLoading (val) {
-				if(!val) {
-					this.scrollerStatus.pullupStatus = 'default';
+				if (val) {
+					this.reset();
 				}
-			}
+			},
 		},
 		beforeDestroy () {
 			this.updateScrollTop();
