@@ -49,11 +49,32 @@ export const setIsLoading = ({ commit }) => {
 }
 
 //登录
-export const login = ({ commit },token) => {
-	console.log(token);
-	return axios.post('/accesstoken', {
-		accesstoken: token
-	})
+export const login = ({ commit }, token) => {
+	return new Promise((resolve, reject) => {
+		axios.post('/accesstoken', {
+			accesstoken: token
+		}).then(res => {
+			let userInfo = res.data;
+			commit(types.SET_USER_INFO, {
+				id: userInfo.id,
+				token: token,
+				loginname: userInfo.loginname,
+				avatar_url: userInfo.avatar_url,
+			});
+			resolve();
+		}).catch( err => {
+			reject(err);
+		})
+	});
+}
+
+//注销
+export const logOut = ({ commit }) => {
+	commit(types.LOGOUT);
+}
+//获取用户信息
+export const getUserInfo = () => {
+
 }
 
 

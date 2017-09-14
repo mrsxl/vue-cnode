@@ -56,7 +56,7 @@
       },
       //返回
       back () {
-      	this.$router.go(-1);
+      	this.$router.goBack();
       },
       //返回顶部
       backtoTop () {
@@ -75,6 +75,7 @@
 <style lang="less" scoped>
 	.topic {
 		position: relative;
+		//overflow-x: hidden;
 		background: #fff;
 
 		header {

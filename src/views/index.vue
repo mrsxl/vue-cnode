@@ -88,6 +88,14 @@
 				this.currentScrollTop = pos.top;
 				this.showBacktoTop = pos.top > 200;
 			},
+			//重置滚动
+			reset () {
+				let scrollTop = this.topicList[this.activeTab.tab].scrollTop;
+				//重置滚动位置
+				this.$nextTick(() => {
+				  this.$refs.scroller.reset({top: scrollTop}, 1, 'ease')
+				})
+			},
 			//隐藏侧边菜单
 			hide () {				
 				this.updateScrollTop();
@@ -108,12 +116,8 @@
 			//上拉加载
 			pullUp () {
 				this.showLoading = true;
-				console.log(789);
 				this.updateScrollTop();
 				this.getList();
-				// setTimeout(() => {
-				// 	this.showLoading = false;
-				// }, 2000)
 			}
 		},
 		watch: {

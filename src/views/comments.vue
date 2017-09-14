@@ -60,7 +60,7 @@
 				this.showBacktoTop = false;
 			},
 			back () {
-				this.$router.go(-1);
+				this.$router.goBack();
 			}
 		}
 	}

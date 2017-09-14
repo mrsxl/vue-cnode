@@ -45,7 +45,7 @@
 		},
 		methods: {
 			back () {
-				this.$router.go(-1);
+				this.$router.goBack();
 			},
 			login () {
 				if (this.token === '') {
@@ -53,7 +53,7 @@
 					this.warnText = '请输入Access Token';
 				} else {
 					this.$store.dispatch('login', this.token).then(res => {
-						//
+						this.$router.go(-1);
 					}).catch(err => {
 						this.showWarn = true;
 						this.warnText = '错误的Access Token';

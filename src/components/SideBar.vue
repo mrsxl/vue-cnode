@@ -1,7 +1,7 @@
 <template>
 	<div class="side">
     <header>
-    	<user-info></user-info>
+    	<user-info :user-info="userInfo"></user-info>
     </header>
     <div class="topics">
       <ul>
@@ -27,7 +27,8 @@
 		},
 		computed: {
 			...mapGetters([
-				'tabs'
+				'tabs',
+				'userInfo'
 			]),
 			//当前显示的tab索引
 			activeTabIndex () {
