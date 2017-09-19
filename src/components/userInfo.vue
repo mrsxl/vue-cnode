@@ -5,10 +5,10 @@
 			<span>点击头像登录</span>
 		</div>
 		<div class="logged" v-else>
-			<div class="info">
+			<router-link :to="{name: 'user', params: {loginname: userInfo.loginname}}" class="info">
 				<img :src="userInfo.avatar_url">
 				<span>{{userInfo.loginname}}</span>
-			</div>
+			</router-link>
 			<button @click="logOut">注销</button>
 		</div>
 	</div>
@@ -48,7 +48,7 @@
 		.info:after {
 			content: '';
 			position: absolute;
-			top: 45%;
+			top: 40%;
 			right: 15px;
 			width: 10px;
 			height: 10px;

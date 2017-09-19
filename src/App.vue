@@ -11,19 +11,22 @@
 	  name: 'app',
 	  data () {
 	  	return {
-	  		transitionName: 'slide-left'
+	  		transitionName: 'slide-right'
 	  	}
 	  },
-	  beforeRouteUpdate (to, from, next) {
-      let isBack = this.$router.isBack
-      console.log(isBack);
-      if (isBack) {
-        this.transitionName = 'slide-right'
-      } else {
-        this.transitionName = 'slide-left'
+    watch: {
+      '$route' (to, from) {
+        //监听路由变化时的状态为前进还是后退
+        let isBack = this.$router.isBack;
+
+        if (isBack) {
+          this.transitionName = 'slide-right';
+        } else {
+          this.transitionName = 'slide-left';
+        }
+
+        this.$router.isBack = false;
       }
-      this.$router.isBack = false
-      next()
     }
 	}
 </script>
@@ -36,16 +39,14 @@
 	  background-color: #fbf9fe;
 	}
 	.view {
-		/*position: absolute;
-	  width:100%;*/
-	  transition: all 1s cubic-bezier(.55,0,.1,1);
+	  transition: all 1.2s cubic-bezier(.55,0,.1,1);
 	}
 	.slide-left-enter, .slide-right-leave-active {
-    opacity: 0;    
-    transform: translate(100px, 0);
+    opacity: 0.5;    
+    transform: translate(100%, 0);
   }
   .slide-left-leave-active, .slide-right-enter {
-    opacity: 0;
-    transform: translate(-100px, 0);
+    opacity: 0.5;
+    transform: translate(-100%, 0);
   }
 </style>

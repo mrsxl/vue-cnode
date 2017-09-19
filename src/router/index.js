@@ -29,7 +29,11 @@ const router = new VueRouter({
 		path: '/comment/:topicId',
 		name: 'comment',
 		component: resolve => require(['../views/comments.vue'], resolve)
-	}, ]
+	}, {
+		path: '/user/:loginname',
+		name: 'user',
+		component: resolve => require(['../views/user.vue'], resolve)
+	},]
 })
 
 //页面刷新时，重新赋值userInfo

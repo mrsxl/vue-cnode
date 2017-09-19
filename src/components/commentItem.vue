@@ -1,8 +1,10 @@
 <template>
 	<a class="comment-item">
 		<div class="comment">
-			<div class="commentItem-header">
-				<img :src="comment.author.avatar_url">
+			<div class="commentItem-header">				
+				<router-link :to="{name: 'user', params: {loginname: comment.author.loginname}}">
+					<img :src="comment.author.avatar_url">
+				</router-link>
 				<div class="author-info">
 					<h4>{{comment.author.loginname}}</h4>
 					<time>{{formateTime(comment.create_at)}}</time>

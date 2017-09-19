@@ -1,7 +1,9 @@
 <template>
 	<div class="topic" :style="{height: clientHeight+'px'}">
 		<header v-if="topic.title">
-			<img :src="topic.author.avatar_url">
+			<router-link :to="{name: 'user', params: {loginname: topic.author.loginname}}">
+				<img :src="topic.author.avatar_url">
+			</router-link>
 			<div class="info">
 				<h4 class="topic-title">{{topic.title}}</h4>
 				<time>最近更新 {{formateTime(topic.last_reply_at)}}</time>
@@ -81,7 +83,7 @@
 		header {
 			display: flex;
 			align-items: center;
-			padding: 15px;
+			padding: 20px 15px;
 			color: #fff;
 			background: linear-gradient(143deg, #4dc2c4,#69ddd3,#88e9d8,#69e1d4);
 
@@ -90,7 +92,7 @@
 				height: 45px;
 				border: 1px solid #ccc;
 				border-radius: 50%;
-				margin-right: 10px;
+				margin-right: 20px;
 			}
 			.info {
 				flex: 1;

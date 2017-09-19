@@ -76,8 +76,17 @@ export const logOut = ({ commit }) => {
 	commit(types.LOGOUT);
 }
 //获取用户信息
-export const getUserInfo = () => {
-
+export const getUserInfo = ({ commit }, userName) => {
+	/*return new Promise((resolve, reject) => {
+		axios.get('/user/'+userName).then( res => {
+			if (res.data.success) {
+				resolve(res.data.data);
+			}
+		}).catch( err => {
+			reject(err);
+		})	
+	});*/
+	return axios.get('/user/'+userName);
 }
 
 
