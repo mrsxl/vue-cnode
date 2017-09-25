@@ -26,6 +26,11 @@ const router = new VueRouter({
 		name: 'topic',
 		component: resolve => require(['../views/topic.vue'], resolve)
 	}, {
+		path: '/createTopic',
+		name: 'createTopic',
+		meta: { requireAuth: true },
+		component: resolve => require(['../views/createTopic.vue'], resolve)
+	}, {
 		path: '/comment/:topicId',
 		name: 'comment',
 		component: resolve => require(['../views/comments.vue'], resolve)
@@ -40,5 +45,20 @@ const router = new VueRouter({
 if(sessionStorage.userInfo) {
 	store.commit(types.SET_USER_INFO, JSON.parse(sessionStorage.userInfo));
 }
+
+router.beforeEach((to, from, next) => {
+	if(to.meta.requireAuth) { //判断是否需要登录权限
+		if (store.state.user.token) { //验证store中是否存在token
+			next();
+		} else {
+			next({
+				path: '/login',
+				query: {redirect: to.fullPath} //将跳转的路由作为参数，登录成功跳转到该路由
+			});
+		}
+	} else {
+		next();
+	}
+})
 
 export default router;

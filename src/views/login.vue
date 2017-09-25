@@ -53,7 +53,8 @@
 					this.warnText = '请输入Access Token';
 				} else {
 					this.$store.dispatch('login', this.token).then(res => {
-						this.$router.go(-1);
+						let redirect = decodeURIComponent(this.$route.query.redirect || '/');
+	          this.$router.replace({path: redirect});
 					}).catch(err => {
 						this.showWarn = true;
 						this.warnText = '错误的Access Token';

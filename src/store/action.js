@@ -75,18 +75,22 @@ export const login = ({ commit }, token) => {
 export const logOut = ({ commit }) => {
 	commit(types.LOGOUT);
 }
+
 //获取用户信息
 export const getUserInfo = ({ commit }, userName) => {
-	/*return new Promise((resolve, reject) => {
-		axios.get('/user/'+userName).then( res => {
-			if (res.data.success) {
-				resolve(res.data.data);
-			}
-		}).catch( err => {
-			reject(err);
-		})	
-	});*/
 	return axios.get('/user/'+userName);
 }
+
+//发帖
+export const createTopic = ({ state }, topicObj) => {
+	topicObj['accesstoken'] = state.user.token;
+	return axios.post('/topics', topicObj)
+} 
+
+
+
+
+
+
 
 

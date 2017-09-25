@@ -20,12 +20,10 @@
 
 <script>
 	import { getClientHeight, formateTime } from '../utils'
-	import { XHeader }from 'vux'
 	import Top from '../components/backtoTop.vue'
 
 	export default {
 		components: {
-			XHeader,
 			Top
 		},
 		mounted () {
