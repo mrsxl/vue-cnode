@@ -18,10 +18,9 @@
 					<recent-topic :recent="item" ></recent-topic>
 				</li>				
 			</ul>
-			<div class="null-tip" v-else>
-				<img src="../assets/img/nothing.png">
+			<no-data v-else>
 				<span>没有内容</span>
-			</div>
+			</no-data>
 		</scroller>	
 		<div class="back" @click="back"><i class="iconfont icon-back"></i></div>
 	</div>
@@ -30,6 +29,7 @@
 <script>
 	import { XHeader, dateFormat, Tab, TabItem, Scroller } from 'vux'
 	import RecentTopic from '../components/recentTopic.vue'
+	import NoData from '../components/noData.vue'
 
 	export default {
 		components: {
@@ -37,7 +37,8 @@
 			Tab,
 			TabItem,
 			Scroller,
-			RecentTopic
+			RecentTopic,
+			NoData
 		},
 		mounted () {
 			this.getUser();
@@ -142,22 +143,6 @@
 			li {
 				display: block;
 				width: 100%;
-			}
-		}
-		.null-tip {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			margin-top: 50px;
-
-			img {
-				width: 120px;
-				margin: 20px;
-			}
-
-			span {
-				font-size: 14px;
-				color: #ccc;
 			}
 		}
 		.back {	 

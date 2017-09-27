@@ -4,14 +4,21 @@
 			<div slot="overwrite-left" class="back" @click="back"></div>
 			<span>评论 {{topic.reply_count}}</span>
 		</x-header>
-		<scroller height="-46" lock-x ref="scroller" @on-scroll="scroll">
-      <ul class="comments-list" >
+		<no-data :overwrite-img="true" v-if="topic !== '' && topic.replies.length === 0">
+			<img src="../assets/img/news.png" slot="img">
+			<span>还没有评论</span>
+		</no-data>
+		<scroller height="-90" lock-x ref="scroller" @on-scroll="scroll" class="scroller" v-else>
+			<ul class="comments-list">
         <li v-for="(item, index) in topic.replies">
-        	<comment-item :comment="item" :floor="index+1"></comment-item>      
+        	<comment-item :comment="item" :floor="index+1" v-on:action="action"></comment-item>      
         </li>
       </ul>
+			
     </scroller>
-    <top :show="showBacktoTop" @click.native="backtoTop" />
+
+    <top :show="showBacktoTop" @click.native="backtoTop"></top>
+    <reply :reply="reply" v-on:cancel="cancelReply"></reply>
 	</div>	
 </template>
 
@@ -19,23 +26,31 @@
 	import { XHeader, Scroller } from 'vux'
 	import CommentItem from '../components/commentItem.vue'
 	import Top from '../components/backtoTop.vue'
-
+	import Reply from '../components/reply.vue'
+	import NoData from '../components/noData.vue'
+	import { mapGetters } from 'vuex'
 
 	export default {
 		components: {
 			XHeader,
 			Scroller,
 			CommentItem,
-			Top
+			Top,
+			Reply,
+			NoData
 		},
 		mounted () {
 			this.getComments();
 		},
 		data () {
 			return {
-				topic: {},
+				topic: '',
 				showBacktoTop: false,
+				reply: {}
 			}
+		},
+		computed: {
+			...mapGetters(['token'])
 		},
 		methods: {
 			//获取帖子详情
@@ -61,6 +76,25 @@
 			},
 			back () {
 				this.$router.goBack();
+			},
+			action (item) {
+				this.isLogin();
+				if (item.type === 'ups') {
+					
+				} else {
+					this.reply = item;
+				}
+				console.log(item);
+			},
+			cancelReply () {
+				console.log(222);
+				this.reply = {};
+			},
+			//判断是否登录，如果未登录转到登录页
+			isLogin () {
+				if (this.token === '') {
+					this.$router.push({name: 'login', params: {redirect: encodeURIComponent(this.$route.path)}});
+				}
 			}
 		}
 	}
@@ -77,13 +111,17 @@
 	    transform: rotate(-45deg);
 		}
 	}
-	.comments-list {
-		li {
-	    padding: 10px 15px;
-	    border-bottom: 1px solid #eee;
-	    background: #fff;
-	  }
-	}
+	.scroller {
+		background: #fff;
+	
+		.comments-list {
+			li {
+		    padding: 10px 15px;
+		    border-bottom: 1px solid #eee;
+		    background: #fff;
+		  }
+		}
+	}	
 </style>
 
 

@@ -78,14 +78,28 @@ export const logOut = ({ commit }) => {
 
 //获取用户信息
 export const getUserInfo = ({ commit }, userName) => {
-	return axios.get('/user/'+userName);
+	return axios.get(`/user/${userName}`);
 }
 
 //发帖
 export const createTopic = ({ state }, topicObj) => {
 	topicObj['accesstoken'] = state.user.token;
 	return axios.post('/topics', topicObj)
+}
+
+//给某一条评论点赞
+export const ups = ({ state }, replyId) => {
+	return axios.post(`/reply/${replyId}/ups`, {
+		accesstoken: state.user.token
+	})
 } 
+
+//新建评论 
+export const reply = ({ state }, reply) => {
+	return axios.post(`/topic/${topicId}/replies`, {
+
+	})
+}
 
 
 

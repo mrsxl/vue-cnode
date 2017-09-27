@@ -13,7 +13,8 @@
 			</div>
 			<div class="commentItem-content markdown-body" v-html="comment.content"></div>
 			<div class="commentItem-footer">
-				<span><i class="iconfont icon-zan"></i>{{comment.ups.length === 0 ? '' : comment.ups.length}}</span><span>回复</span>
+				<span :class="[comment.is_uped ? 'uped' : '']" @click="action('up')"><i class="iconfont icon-zan"></i>{{comment.ups.length === 0 ? '' : comment.ups.length}}</span>
+				<span @click="action('reply')">回复</span>
 			</div>
 		</div>
 	</a>
@@ -35,6 +36,13 @@
       //格式化时间
       formateTime (time) {
         return formateTime(time);
+      },
+      action (type) {
+      	this.$emit('action', {
+      		type: type,
+      		id: this.comment.id,
+      		author: this.comment.author.loginname
+      	})
       }
     }
 	}
@@ -95,6 +103,9 @@
 				i {
 					margin-right: 5px;
 					font-size: 14px;
+				}
+				.uped {
+					color: #69ddd3;
 				}
 			}
 		}
