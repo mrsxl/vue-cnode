@@ -2,13 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import FastClick from 'fastclick'
-import axios from 'axios'
 import router from './router'
 import App from './App'
 import store from './store'
+import  { ToastPlugin } from 'vux'
 
-axios.defaults.baseURL = "https://cnodejs.org/api/v1";
-Vue.prototype.$http = axios;
+Vue.use(ToastPlugin);
 
 
 FastClick.attach(document.body)

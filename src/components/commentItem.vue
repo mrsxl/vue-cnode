@@ -13,7 +13,7 @@
 			</div>
 			<div class="commentItem-content markdown-body" v-html="comment.content"></div>
 			<div class="commentItem-footer">
-				<span :class="[comment.is_uped ? 'uped' : '']" @click="action('up')"><i class="iconfont icon-zan"></i>{{comment.ups.length === 0 ? '' : comment.ups.length}}</span>
+				<span :class="[ isUped() ? 'uped' : '']" @click="action('up')"><i class="iconfont icon-zan"></i>{{comment.ups.length === 0 ? '' : comment.ups.length}}</span>
 				<span @click="action('reply')">回复</span>
 			</div>
 		</div>
@@ -22,6 +22,7 @@
 
 <script>
 	import { formateTime } from '../utils'
+	import { mapGetters } from 'vuex'
 
 	export default {
 		props: {
@@ -32,10 +33,22 @@
       	type: Number
       }
     },
+    computed: {
+    	...mapGetters(['userInfo'])
+    },
     methods: {
       //格式化时间
       formateTime (time) {
         return formateTime(time);
+      },
+      //是否点赞
+      isUped() {
+				let id = this.userInfo ? this.userInfo.id : '';
+				if (this.comment.ups.indexOf(id) >= 0) {
+					return true;
+				} else {
+					return false;
+				}
       },
       action (type) {
       	this.$emit('action', {

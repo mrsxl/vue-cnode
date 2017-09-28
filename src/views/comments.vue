@@ -18,7 +18,7 @@
     </scroller>
 
     <top :show="showBacktoTop" @click.native="backtoTop"></top>
-    <reply :reply="reply" v-on:cancel="cancelReply"></reply>
+    <reply :topic-id="$route.params.topicId" :reply="reply" v-on:hide="hideReply"></reply>
 	</div>	
 </template>
 
@@ -68,9 +68,6 @@
 			},
 			//点赞
 			ups (item) {
-				/*console.log(item);
-				console.log(index);
-				return;*/
 				let index = this.replies.indexOf(item);
 				this.$store.dispatch('ups', item.id).then(res => {
 					if(res.data.success) {
@@ -85,8 +82,10 @@
 							this.replies[index].ups.push(this.userInfo.id);
 						}
 					}
+				}).catch(err => {
+					this.$vux.toast.text(err.response.data.error_msg, 'center')
 				})
-			},
+			}, 
 			//列表滚动
 			scroll (pos) {
 				this.showBacktoTop = pos.top > 200;
@@ -107,8 +106,25 @@
 					this.reply = item.item;
 				}
 			},
-			//取消回复
-			cancelReply () {
+			//隐藏回复
+			hideReply (params) {
+				if (params.type === 'push') {
+					let time = new Date();
+					this.replies.push({
+						id: params.id,
+            author: {
+                loginname: this.userInfo.loginname,
+                avatar_url: this.userInfo.avatar_url
+            },
+            content: params.content,
+            ups: [],
+            create_at: time
+					})
+
+					this.$nextTick(() => {
+					  this.$refs.scroller.reset()
+					})
+				}
 				this.reply = {};
 			},
 			//判断是否登录，如果未登录转到登录页

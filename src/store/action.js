@@ -98,10 +98,9 @@ export const ups = ({ state }, replyId) => {
 } 
 
 //新建评论 
-export const reply = ({ state }, reply) => {
-	return axios.post(`/topic/${topicId}/replies`, {
-
-	})
+export const reply = ({ state }, params) => {
+	params.reply['accesstoken'] = state.user.token;
+	return axios.post(`/topic/${params.topicId}/replies`, params.reply)
 }
 
 

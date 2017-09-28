@@ -44,7 +44,7 @@
 		methods: {
 			//获取帖子详情
 			getTopic () {
-				this.$http.get('/topic/'+this.$route.params.topicId).then(res => {
+				this.$store.dispatch('getTopic', this.$route.params.topicId).then(res => {
 					if (res.data.success) {
 						this.topic = res.data.data
 					}

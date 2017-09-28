@@ -16,6 +16,7 @@
 
 	export default {
 		props: {
+			topicId: String,
 			reply: Object
 		},
 		data () {
@@ -30,13 +31,34 @@
 				if (this.content === '') {
 					return;
 				} else {
-					
+					let params = {
+						topicId: this.topicId,
+						reply: {
+							content: this.content
+						}						
+					};
+					if (Object.keys(this.reply).length > 0) {
+						params.reply.content = `@${this.reply.author.loginname} ${this.content}`;
+						params.reply['reply_id'] = this.reply.id;
+					}
+					this.$store.dispatch('reply', params).then(res => {
+						if(res.data.success) {
+							this.content = '';
+							this.hide({
+								type: 'push',
+							  id: res.data.reply_id,
+							  content: params.reply.content
+							})
+						}
+					})
 				}
 			},
 			//取消评论
 			cancelReply () {
-				console.log(111);
-				this.$emit('cancel');
+				this.hide({type: 'cancel'});
+			},
+			hide (params) {
+				this.$emit('hide', params);
 			}
 		}
 	}
