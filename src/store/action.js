@@ -7,8 +7,6 @@ axios.defaults.baseURL = "https://cnodejs.org/api/v1";
 export const toogleTab = ({ dispatch, commit, state }, data) => {
 	commit(types.SET_ACTIVE_TAB, data);
 	
-	console.log('要显示的tab:'+data.tab);
-	console.log('要显示tab的数组长度:'+state.topic.topicLists[data.tab].data.length);
 	if (state.topic.topicLists[data.tab].data.length === 0) {
 		dispatch('fetchTopicList');
 	}
@@ -81,7 +79,12 @@ export const getUserInfo = ({ commit }, userName) => {
 	return axios.get(`/user/${userName}`);
 }
 
-//发帖
+//获取主题详情
+export const getTopic = ({ state }, id) => {
+	return axios.get(`/topic/${id}`);
+}
+
+//发表主题
 export const createTopic = ({ state }, topicObj) => {
 	topicObj['accesstoken'] = state.user.token;
 	return axios.post('/topics', topicObj)

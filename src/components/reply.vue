@@ -5,7 +5,7 @@
 		<div class="reply-to" v-if="Object.keys(reply).length !== 0">
 			<div>
 				<span>正在回复</span>
-				<span>{{reply.author}}</span>
+				<span>{{reply.author.loginname}}</span>
 			</div>
 			<button class="cancel" @click="cancelReply">取消回复</button>
 		</div>

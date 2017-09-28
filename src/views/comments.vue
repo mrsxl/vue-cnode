@@ -4,13 +4,13 @@
 			<div slot="overwrite-left" class="back" @click="back"></div>
 			<span>评论 {{topic.reply_count}}</span>
 		</x-header>
-		<no-data :overwrite-img="true" v-if="topic !== '' && topic.replies.length === 0">
+		<no-data :overwrite-img="true" v-if="replies.length === 0">
 			<img src="../assets/img/news.png" slot="img">
 			<span>还没有评论</span>
 		</no-data>
 		<scroller height="-90" lock-x ref="scroller" @on-scroll="scroll" class="scroller" v-else>
 			<ul class="comments-list">
-        <li v-for="(item, index) in topic.replies">
+        <li v-for="(item, index) in replies">
         	<comment-item :comment="item" :floor="index+1" v-on:action="action"></comment-item>      
         </li>
       </ul>
@@ -46,23 +46,45 @@
 			return {
 				topic: '',
 				showBacktoTop: false,
-				reply: {}
+				reply: {},
+				replies: []
 			}
 		},
 		computed: {
-			...mapGetters(['token'])
+			...mapGetters(['token', 'userInfo'])
 		},
 		methods: {
-			//获取帖子详情
+			//获取评论列表
 			getComments () {
-				this.$http.get('/topic/'+this.$route.params.topicId).then(res => {
-					if (res.data.success) {
-						this.topic = res.data.data
+				this.$store.dispatch('getTopic', this.$route.params.topicId).then(res => {
+					if(res.data.success) {
+						this.replies = res.data.data.replies;
 					}
 
 					this.$nextTick(() => {
 					  this.$refs.scroller.reset()
 					})
+				})
+			},
+			//点赞
+			ups (item) {
+				/*console.log(item);
+				console.log(index);
+				return;*/
+				let index = this.replies.indexOf(item);
+				this.$store.dispatch('ups', item.id).then(res => {
+					if(res.data.success) {
+						if (res.data.action === 'down') {
+							let upIndex = this.replies[index].ups.indexOf(this.userInfo.id);
+							if (upIndex >= 0) {
+								this.replies[index].ups.splice(upIndex, 1);
+							}
+							this.replies[index].is_uped = false;
+						} else {
+							this.replies[index].is_uped = true;
+							this.replies[index].ups.push(this.userInfo.id);
+						}
+					}
 				})
 			},
 			//列表滚动
@@ -79,21 +101,20 @@
 			},
 			action (item) {
 				this.isLogin();
-				if (item.type === 'ups') {
-					
+				if (item.type === 'up') {
+					this.ups(item.item);
 				} else {
-					this.reply = item;
+					this.reply = item.item;
 				}
-				console.log(item);
 			},
+			//取消回复
 			cancelReply () {
-				console.log(222);
 				this.reply = {};
 			},
 			//判断是否登录，如果未登录转到登录页
 			isLogin () {
 				if (this.token === '') {
-					this.$router.push({name: 'login', params: {redirect: encodeURIComponent(this.$route.path)}});
+					this.$router.push({path: '/login', query: {redirect: encodeURIComponent(this.$route.path)}});
 				}
 			}
 		}

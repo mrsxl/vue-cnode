@@ -39,14 +39,14 @@
 	  background-color: #fbf9fe;
 	}
 	.view {
-	  transition: all 1.2s cubic-bezier(.55,0,.1,1);
+	  transition: all 1s cubic-bezier(.55,0,.1,1);
 	}
 	.slide-left-enter, .slide-right-leave-active {
-    opacity: 0.5;    
+    opacity: 0;    
     transform: translate(100%, 0);
   }
   .slide-left-leave-active, .slide-right-enter {
-    opacity: 0.5;
+    opacity: 1;
     transform: translate(-100%, 0);
   }
 </style>

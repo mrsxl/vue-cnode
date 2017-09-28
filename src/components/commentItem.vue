@@ -40,8 +40,7 @@
       action (type) {
       	this.$emit('action', {
       		type: type,
-      		id: this.comment.id,
-      		author: this.comment.author.loginname
+      		item: this.comment
       	})
       }
     }
