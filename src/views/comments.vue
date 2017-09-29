@@ -61,9 +61,11 @@
 						this.replies = res.data.data.replies;
 					}
 
-					this.$nextTick(() => {
-					  this.$refs.scroller.reset()
-					})
+					if (this.replies.length !== 0) {
+						this.$nextTick(() => {
+						  this.$refs.scroller.reset()
+						})
+					}
 				})
 			},
 			//点赞
